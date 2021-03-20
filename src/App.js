@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState} from 'react';
 
 function App() {
+  const [pokemon, setPokemon] = useState({});
+  const [listPokemons, setListPokemons] = useState([]);
+
+  const getPokemon = () => {
+    fetch('https://pokeapi.co/api/v2/pokemon/?offset=1&limit=1118')
+
+    .then((response) => response.json())
+
+    .then((jsonResponse) => {
+      console.log(jsonResponse);
+      setListPokemons(jsonResponse.results);
+    })
+
+    .catch((error) => {
+      console.log("No pokemon balls!");
+      console.log(error);
+    });
+
+    console.log("Ditto is the cooliest!");
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={getPokemon}>Fetch Pokemon</button>
+      {
+        listPokemons.map((pokemon, index) => (
+          <div>
+            <ul>
+              {pokemon.name}
+            </ul>
+          </div>
+        ))
+      }
     </div>
   );
 }
